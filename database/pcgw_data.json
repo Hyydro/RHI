@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "game_count": 55395,
-  "generated": "2026-10-05T12:26:30Z",
+  "game_count": 55404,
+  "generated": "2026-10-05T18:21:17Z",
   "name_overrides": {
     "ACE COMBAT 8: WINGS OF THEVE": "Ace Combat 8: Wings of Theve",
     "AFOP": "Avatar: Frontiers of Pandora",
@@ -13597,7 +13597,7 @@
     },
     "AVA: Dog Tag": {
       "steam_appid": 815940,
-      "engine": "Unreal Engine 4"
+      "engine": "Unreal Engine 3"
     },
     "Avabel Online": {
       "steam_appid": 1130700,
@@ -43981,7 +43981,7 @@
       "dx11": true,
       "dx12": true,
       "config_path": "%LOCALAPPDATA%\\DH2\\Saved\\Config\\WindowsNoEditor\\",
-      "engine": "Unreal Engine 4"
+      "engine": "Unreal Engine 5"
     },
     "Destroy Space Aliens": {
       "steam_appid": 733180
@@ -45771,6 +45771,11 @@
       "config_path": "%LOCALAPPDATA%\\Disney Interactive Studios\\Disney Universe",
       "engine": "EngineX"
     },
+    "Disney Villains Cursed Café": {
+      "steam_appid": 2439220,
+      "engine": "Unity"
+    },
+    "Disney's Adventures in Typing with Timon and Pumbaa": {},
     "Disney's Aladdin": {
       "steam_appid": 561100
     },
@@ -45795,6 +45800,8 @@
     },
     "Disney's Math Quest with Aladdin": {},
     "Disney's Princess Fashion Boutique": {},
+    "Disney's Reading Quest with Aladdin": {},
+    "Disney's Villains' Revenge": {},
     "Disneyland Adventures": {
       "steam_appid": 630610,
       "dx11": true,
@@ -110645,6 +110652,7 @@
     },
     "Neighbours Back from Hell": {
       "steam_appid": 1283190,
+      "dx11": true,
       "config_path": "%APPDATA%\\Neighbours back From Hell\\NFHSettings.json",
       "engine": "Unity"
     },
@@ -131789,6 +131797,7 @@
     "Red Room": {
       "steam_appid": 1033510
     },
+    "Red Rooster": {},
     "Red Rope: Don't Fall Behind": {
       "steam_appid": 381880
     },
@@ -161143,6 +161152,9 @@
       "config_path": "HKEY_CURRENT_USER\\Software\\BahramiGames\\Tandis\\",
       "engine": "Unity"
     },
+    "Tangerine Antarctic": {
+      "steam_appid": 3261450
+    },
     "Tangle Tower": {
       "steam_appid": 359510,
       "dx11": true,
@@ -170682,6 +170694,10 @@
     "The Portal Dimension - Bizarre Huntseeker": {
       "steam_appid": 968480
     },
+    "The Powder Toy": {
+      "steam_appid": 1148350,
+      "config_path": "<path-to-game>\\userdata"
+    },
     "The Power Factory": {
       "steam_appid": 707860
     },
@@ -178754,6 +178770,9 @@
       "vulkan": true,
       "opengl": true,
       "config_path": "%APPDATA%\\Transport Fever 2\\settings.lua"
+    },
+    "Transport Fever 3": {
+      "steam_appid": 3493540
     },
     "Transport Giant": {
       "steam_appid": 271370
@@ -191012,6 +191031,7 @@
       "dx9": true,
       "config_path": "%USERPROFILE%\\Documents\\Disney Interactive Studios\\Winnie the Pooh"
     },
+    "Winnie The Pooh Activity Center": {},
     "Winnie the Pooh in the Hundred Acre Wood": {
       "engine": "AGI"
     },
