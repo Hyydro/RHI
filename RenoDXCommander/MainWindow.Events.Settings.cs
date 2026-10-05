@@ -1924,7 +1924,7 @@ public sealed partial class MainWindow
                 Text                = text,
                 FontSize            = 11,
                 FontWeight          = Microsoft.UI.Text.FontWeights.SemiBold,
-                Foreground          = UIFactory.Brush(ResourceKeys.TextTertiaryBrush),
+                Foreground          = UIFactory.Brush(ResourceKeys.TextSecondaryBrush),
                 HorizontalAlignment = col == 0 ? HorizontalAlignment.Left : HorizontalAlignment.Center,
                 VerticalAlignment   = VerticalAlignment.Center,
             };
@@ -1975,7 +1975,7 @@ public sealed partial class MainWindow
                 FontSize            = 13,
                 Foreground          = entry.RenoDXStatus == "Done" ? UIFactory.GetBrush("#5ECB7D")
                                     : entry.RenoDXStatus == "WIP"  ? UIFactory.GetBrush("#D4A856")
-                                    : UIFactory.Brush(ResourceKeys.TextTertiaryBrush),
+                                    : UIFactory.Brush(ResourceKeys.TextSecondaryBrush),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment   = VerticalAlignment.Center,
             };
@@ -1988,7 +1988,7 @@ public sealed partial class MainWindow
                 FontSize            = 13,
                 Foreground          = entry.LumaStatus == "Done" ? UIFactory.GetBrush("#B898E8")
                                     : entry.LumaStatus == "WIP"  ? UIFactory.GetBrush("#D4A856")
-                                    : UIFactory.Brush(ResourceKeys.TextTertiaryBrush),
+                                    : UIFactory.Brush(ResourceKeys.TextSecondaryBrush),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment   = VerticalAlignment.Center,
             };

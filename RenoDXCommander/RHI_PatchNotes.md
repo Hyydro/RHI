@@ -8,6 +8,9 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 
 ### Bug Fixes
 
+**Available HDR Mods**
+- Fixed column headers and ✗ marks being too faint to read.
+
 **Crashes & Freezes on Close**
 - Fixed an incomplete shutdown sequence — timers and panel scans are now stopped, pending UI requests cancelled, the update log window closed, OLE drag-drop cleaned up, and settings flushed in the correct order.
 - Fixed progress dialogs sometimes getting permanently stuck. Dialogs now retain ownership of their modal slot until WinUI fully finishes closing them, including on error paths. Startup dialogs (patch notes, MOTD, update check) now run one at a time instead of racing each other.
