@@ -9,20 +9,21 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 ### Bug Fixes
 
 **Crashes & Freezes on Close**
-- Fixed background tasks, timers, and open dialogs continuing to run after the window closed, which could cause crashes or hangs during shutdown. The app now cancels everything in the right order before exiting.
-- Fixed progress dialogs sometimes getting permanently stuck — if a dialog closed abnormally, the modal slot could leak and block all future dialogs for the rest of the session.
+- Fixed an incomplete shutdown sequence — timers and panel scans are now stopped, pending UI requests cancelled, the update log window closed, OLE drag-drop cleaned up, and settings flushed in the correct order.
+- Fixed progress dialogs sometimes getting permanently stuck. Dialogs now retain ownership of their modal slot until WinUI fully finishes closing them, including on error paths. Startup dialogs (patch notes, MOTD, update check) now run one at a time instead of racing each other.
+- Fixed the app not exiting cleanly when closed to tray during an installer handoff — it now exits explicitly rather than relying on "close to tray" behaviour.
 
-**Startup Dialogs**
-- Fixed patch notes, MOTD, and update check dialogs racing each other on startup. They now run one at a time in sequence.
+**Library & Refresh**
+- Fixed a race condition where starting a Refresh while the initial scan was still running could corrupt the game library. Initialisation and Refresh are now serialised, the previous library is retained while the new one is being built, and the UI merge waits for the background scan to finish before proceeding.
 
 **Single Instance & Admin Mode**
-- Fixed Admin Mode relaunch sometimes failing silently because the single-instance mutex was still held by the exiting process. It's now released before the new process starts.
-- Fixed a window where a file dropped onto a second RHI instance could be silently lost if it arrived before the message handler was ready.
-- Fixed Refresh and Full Refresh being able to race each other if triggered in quick succession.
+- Hardened single-instance ownership and made the admin task query async with a timeout. The shutdown signal file is now cleaned up so a freshly launched instance doesn't accidentally consume it.
 
 **Installer**
-- Fixed the installer using `AttachThreadInput` to bring RHI to the front after an update, which could cause a deadlock if RHI was unresponsive. It now uses a safe message-based handoff instead.
-- Installer script no longer has hardcoded user paths.
+- Removed the use of `AttachThreadInput` for bringing RHI to the foreground after an update — this could tie RHI's responsiveness to the installer or any other foreground app. Replaced with a safe message-based handoff.
+
+**Downloads**
+- Added cancellation and a 10-minute timeout to installer downloads, plus partial file cleanup if the download fails or is cancelled.
 
 ---
 
