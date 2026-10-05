@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "game_count": 55373,
-  "generated": "2026-10-04T05:30:49Z",
+  "game_count": 55395,
+  "generated": "2026-10-05T12:26:30Z",
   "name_overrides": {
     "ACE COMBAT 8: WINGS OF THEVE": "Ace Combat 8: Wings of Theve",
     "AFOP": "Avatar: Frontiers of Pandora",
@@ -2475,6 +2475,7 @@
     "A Purrtato Tail - By the Light of the Elderstar": {
       "steam_appid": 661750
     },
+    "A Question of Sport": {},
     "A Quick Death": {
       "steam_appid": 654000
     },
@@ -6422,7 +6423,9 @@
     "Alfonzo's Arctic Adventure": {
       "steam_appid": 1170170
     },
-    "Alfred Hitchcock Presents: The Final Cut": {},
+    "Alfred Hitchcock Presents: The Final Cut": {
+      "engine": "CINERGY"
+    },
     "Alfred Hitchcock: Vertigo": {
       "steam_appid": 1449320,
       "engine": "Unity"
@@ -7950,6 +7953,7 @@
       "config_path": "%USERPROFILE%\\AppData\\LocalLow\\Fallen Tree Games Ltd\\American Fugitive\\SaveGame\\Profile\\PlayerProfile.dat.bson, HKEY_CURRENT_USER\\Software\\Fallen Tree Games Ltd\\American Fugitive\\",
       "engine": "Unity"
     },
+    "American Gladiators": {},
     "American Hero": {
       "engine": "RapidFire"
     },
@@ -27359,6 +27363,9 @@
       "config_path": "HKEY_CURRENT_USER\\Software\\CarX Technologies\\CarX Street\\, %USERPROFILE%\\AppData\\LocalLow\\CarX Technologies\\CarX Street\\",
       "engine": "Unity"
     },
+    "Casanova: The Duel of the Black Rose": {
+      "engine": "CINERGY"
+    },
     "Case 2: Animatronics Survival": {
       "steam_appid": 722960
     },
@@ -27742,6 +27749,8 @@
     "Castra": {
       "steam_appid": 1073140
     },
+    "Castrol Honda Superbike 2000": {},
+    "Castrol Honda Superbike World Champions": {},
     "Casual Desktop Game": {
       "steam_appid": 1001860
     },
@@ -29741,7 +29750,9 @@
       "steam_appid": 950740,
       "engine": "Unity"
     },
-    "China: The Forbidden City": {},
+    "China: The Forbidden City": {
+      "engine": "Omni3D"
+    },
     "Chinatown Detective Agency": {
       "steam_appid": 1172190,
       "engine": "Unity"
@@ -42308,8 +42319,8 @@
       "steam_appid": 548430,
       "dx11": true,
       "dx12": true,
-      "config_path": "<path-to-game>\\FSD\\Saved\\Config\\WindowsNoEditor\\",
-      "config_path_xbox": "<path-to-game>\\FSD\\Saved\\Config\\WinGDK\\",
+      "config_path": "<path-to-game>\\FSD\\Saved\\Config\\WindowsNoEditor\\GameUserSettings.ini",
+      "config_path_xbox": "<path-to-game>\\FSD\\Saved\\Config\\WinGDK\\*.ini",
       "engine": "Unreal Engine 4"
     },
     "Deep Rock Galactic: Rogue Core": {
@@ -48886,6 +48897,7 @@
     "Dream Stone": {
       "steam_appid": 603090
     },
+    "Dream Street: Magic Time Adventure": {},
     "Dream Tactics": {
       "steam_appid": 1897650,
       "opengl": true,
@@ -71809,7 +71821,7 @@
     "Guilty Gear Strive": {
       "steam_appid": 1384160,
       "dx11": true,
-      "config_path": "%LOCALAPPDATA%\\GGST\\Saved\\Config\\WindowsNoEditor\\",
+      "config_path": "%LOCALAPPDATA%\\GGST\\Saved\\Config\\WindowsNoEditor",
       "engine": "Unreal Engine 4"
     },
     "Guilty Gear X": {},
@@ -85691,7 +85703,9 @@
     "Jersey Devil": {
       "config_path": "<path-to-game>\\bin\\config.pc"
     },
-    "Jerusalem: The Three Roads to the Holy Land": {},
+    "Jerusalem: The Three Roads to the Holy Land": {
+      "engine": "Omni3D"
+    },
     "Jesters Poker": {
       "steam_appid": 800840
     },
@@ -85813,6 +85827,7 @@
       "config_path": "%USERPROFILE%\\Documents\\jng2\\game.ini",
       "engine": "MonoGame"
     },
+    "Jetsons: The Computer Game": {},
     "Jetstream": {
       "steam_appid": 738860
     },
@@ -93991,7 +94006,7 @@
     "Like a Dragon: Ishin!": {
       "steam_appid": 1805480,
       "dx12": true,
-      "config_path": "%APPDATA%\\SEGA\\LikeADragonIshin\\<user-id>\\system\\",
+      "config_path": "%APPDATA%\\SEGA\\LikeADragonIshin\\<user-id>\\system\\, %LOCALAPPDATA%\\LikeaDragonIshin\\Saved\\Config\\WindowsNoEditor\\",
       "engine": "Unreal Engine 4"
     },
     "Like a Dragon: Pirate Yakuza in Hawaii": {
@@ -103354,6 +103369,7 @@
     "Mike Goes on Hike": {
       "steam_appid": 912000
     },
+    "Mike Read's Computer Pop Quiz": {},
     "Mike Was ðíursed": {
       "steam_appid": 332700
     },
@@ -105920,6 +105936,7 @@
     },
     "Monty Python & the Quest for the Holy Grail": {},
     "Monty Python's Complete Waste of Time": {},
+    "Monty Python's Flying Circus: The Computer Game": {},
     "Monty Python's The Meaning of Life": {},
     "Monument": {
       "steam_appid": 376730
@@ -107304,7 +107321,8 @@
       "engine": "Unity"
     },
     "Muchi Muchi Pork! & PinkSweets Boosted": {
-      "steam_appid": 4229200
+      "steam_appid": 4229200,
+      "config_path": "%APPDATA%\\MUCHI_PINK\\"
     },
     "MUD Motocross World Championship": {
       "steam_appid": 226780,
@@ -121810,6 +121828,7 @@
     "Pilferer": {
       "steam_appid": 826130
     },
+    "Pilgrim: Faith as a Weapon": {},
     "Pilgrimage": {
       "steam_appid": 888620
     },
@@ -125524,6 +125543,7 @@
     "Primitive Survival": {
       "steam_appid": 890780
     },
+    "Primitive Wars": {},
     "Primordia": {
       "steam_appid": 227000,
       "dx9": true,
@@ -134488,7 +134508,9 @@
       "steam_appid": 2118510,
       "engine": "Unity"
     },
-    "Ring II: Twilight of the Gods": {},
+    "Ring II: Twilight of the Gods": {
+      "engine": "CINERGY"
+    },
     "Ring of Elysium": {
       "steam_appid": 755790,
       "dx9": true,
@@ -134513,7 +134535,9 @@
     "Ring the City": {
       "steam_appid": 1070320
     },
-    "Ring: The Legend of the Nibelungen": {},
+    "Ring: The Legend of the Nibelungen": {
+      "engine": "Omni3D"
+    },
     "Ringies": {
       "steam_appid": 394480,
       "config_path": "<span class=\"file-span-linebreak\"><span class=\"file-span\"></span><code class=\"file-code\">%APPDATA%\\MiniIT Games\\Ringies\\prefs.dat</code></span>"
@@ -138649,6 +138673,7 @@
       "steam_appid": 1764530,
       "engine": "Unity"
     },
+    "Saint & Greavsie": {},
     "Saint Emiliana": {
       "steam_appid": 1257170,
       "engine": "RPG Maker"
@@ -151523,6 +151548,7 @@
       "config_path": "%APPDATA%\\Activision\\Spider-Man 3\\",
       "engine": "Treyarch NGL"
     },
+    "Spider-Man: Edge of Time (EdgeOfTimeRecompiled)": {},
     "Spider-Man: Far From Home - Virtual Reality Experience": {
       "steam_appid": 1067800,
       "engine": "Unreal Engine 4"
@@ -152543,6 +152569,8 @@
     "Stability": {
       "steam_appid": 667210
     },
+    "Stable Masters": {},
+    "Stable Masters 2": {},
     "Stable Orbit": {
       "steam_appid": 481190
     },
@@ -155999,6 +156027,7 @@
       "config_path": "<path-to-game>\\*.cfg",
       "engine": "Kex Engine"
     },
+    "Strike Base": {},
     "Strike Cars": {
       "steam_appid": 906020
     },
@@ -157211,6 +157240,7 @@
     "Super": {
       "steam_appid": 598170
     },
+    "Super 1 Karting Simulation": {},
     "Super 123": {
       "steam_appid": 711700
     },
@@ -165122,6 +165152,7 @@
       "config_path": "%LOCALAPPDATA%\\Prospect\\Saved\\",
       "engine": "Unreal Engine 4"
     },
+    "The Cycles: International Grand Prix Racing": {},
     "The D Show": {
       "engine": "DreamFactory"
     },
@@ -168809,6 +168840,7 @@
     "The Legend of the Dragonflame High School 2": {
       "steam_appid": 1032040
     },
+    "The Legend of the Prophet & the Assassin": {},
     "The Legend of Three Kingdoms": {
       "steam_appid": 1437820
     },
@@ -171502,6 +171534,7 @@
       "config_path": "%LOCALAPPDATA%\\Funcom\\TSW\\Prefs",
       "engine": "DreamWorld"
     },
+    "The Secrets of Alamût": {},
     "The Secrets of Atlantis: The Sacred Legacy": {},
     "The Secrets of da Vinci: The Forbidden Manuscript": {
       "dx9": true,
@@ -172832,6 +172865,7 @@
       "steam_appid": 3838790,
       "engine": "Unreal Engine 5"
     },
+    "The Twilight Zone (1988)": {},
     "The Twins": {
       "steam_appid": 1218570
     },
@@ -174356,6 +174390,7 @@
       "config_path": "%USERPROFILE%\\Documents\\My Games\\ThomasAndFriends\\Saved\\Config\\WindowsNoEditor\\",
       "engine": "Unreal Engine 4"
     },
+    "Thomas the Tank Engine & Friends": {},
     "Thomas the Tank Engine & Friends Pinball": {},
     "Thomas Was Alone": {
       "steam_appid": 220780,
@@ -175344,7 +175379,7 @@
     "Times of Conflict": {},
     "Times of Lore": {},
     "TimeScape: Journey to Pompeii": {
-      "engine": "CINview"
+      "engine": "Omni3D"
     },
     "TimeScar: Hyperion": {
       "steam_appid": 908730
@@ -180494,7 +180529,9 @@
       "config_path": "<path-to-game>\\TurboTrucks.ini"
     },
     "Turbo Tunnel": {
-      "steam_appid": 859090
+      "steam_appid": 859090,
+      "config_path": "%USERPROFILE%\\AppData\\Local\\Pipeline\\Saved\\Config\\WindowsNoEditor",
+      "engine": "Unreal Engine 4"
     },
     "TurbOT Racing": {
       "steam_appid": 819560,
