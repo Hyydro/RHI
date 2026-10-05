@@ -4,7 +4,7 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 
 ## v2.8.5
 
-*Thanks to lazorr410 for researching and contributing the fixes in this release.*
+*Thanks to Lazorr for researching and contributing the fixes in this release.*
 
 ### Bug Fixes
 
