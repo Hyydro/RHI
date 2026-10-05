@@ -828,6 +828,8 @@ public partial class DetailPanelBuilder
                 Microsoft.UI.Dispatching.DispatcherQueuePriority.Low,
                 () =>
                 {
+                    // Guard: user navigated away between the outer callback and this deferred grid addition.
+                    if (_window.ViewModel.SelectedGame != card) return;
                     _window.ViewModel.SetLastUiAction($"BuildDriverProfileSectionWithData:AddingGrid({capturedName})");
                     targetPanel.Children.Add(nvidiaGrid);
                     _window.ViewModel.SetLastUiAction($"BuildDriverProfileSectionWithData:AddingNotice({capturedName})");

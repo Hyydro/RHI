@@ -213,6 +213,7 @@ public sealed partial class MainWindow
     internal void BuildOverridesPanel(GameCardViewModel card)
     {
         ViewModel.SetLastUiAction($"BuildOverridesPanel({card.GameName})");
+        _lastBuiltCard = card;
         _detailPanelBuilder.BuildOverridesPanel(card);
     }
 

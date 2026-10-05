@@ -639,6 +639,7 @@ public sealed partial class MainWindow : Window
 
     private DispatcherTimer? _selectionDebounceTimer;
     private GameCardViewModel? _pendingSelectionCard;
+    private GameCardViewModel? _lastBuiltCard; // tracks which card the panel was last fully built for
 
     private void GameList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -657,6 +658,16 @@ public sealed partial class MainWindow : Window
                             var target = _pendingSelectionCard;
                             if (target != null && target == ViewModel.SelectedGame)
                             {
+                                // Skip full rebuild when the same card is selected again (e.g. background
+                                // merge re-fires SelectionChanged for the already-selected game). This prevents
+                                // duplicate TryEnqueue(Low) callbacks from accumulating and causing WinUI
+                                // layout hangs in the NeuralRendering / DriverProfile sections.
+                                if (target == _lastBuiltCard)
+                                {
+                                    _crashReporter?.Log($"[SelectionDebounce] Skipping rebuild — same card already built: '{target.GameName}'");
+                                    return;
+                                }
+                                _lastBuiltCard = target;
                                 _crashReporter?.Log($"[SelectionDebounce] PopulateDetailPanel start: '{target.GameName}'");
                                 PopulateDetailPanel(target);
                                 _crashReporter?.Log($"[SelectionDebounce] PopulateDetailPanel done, BuildOverridesPanel start: '{target.GameName}'");

@@ -86,9 +86,16 @@ public partial class DetailPanelBuilder
 
             _window.DispatcherQueue?.TryEnqueue(Microsoft.UI.Dispatching.DispatcherQueuePriority.Low, () =>
             {
+                // Guard: stale scan (game navigated away while scan was in flight)
+                if (scanToken.IsCancellationRequested) return;
                 // Guard: Settings panel open or dialog showing — don't touch the live tree while it's hidden
                 if (_window.SettingsPanel.Visibility == Microsoft.UI.Xaml.Visibility.Visible
                     || DialogService.IsDialogOpen) return;
+                // Guard: user navigated to a different game before this callback fired.
+                // Without this, rapid A→B→A navigation queues two callbacks for A; both pass
+                // a name check but the first one clears + rebuilds the NR panel just as the
+                // second is about to do the same, producing cascading WinUI layout hangs.
+                if (_window.ViewModel.SelectedGame != card) return;
 
                 _window.ViewModel.SetLastUiAction($"BuildNeuralRenderingSectionWithData({card.GameName})");
                 var __sw = System.Diagnostics.Stopwatch.StartNew();

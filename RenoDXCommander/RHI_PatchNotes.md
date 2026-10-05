@@ -2,6 +2,14 @@
 
 To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. Takes about 30 seconds.
 
+## v2.8.6 Beta 1
+
+### Bug Fixes
+
+**UI Freeze**
+- Fixed a recurring UI freeze that occurred after navigating between games with DLSS and Neural Rendering installed. The Neural Rendering section was missing a stale-selection guard on its deferred UI callback — when the user navigated away and back to the same game, two callbacks accumulated in the queue, both fired, and their cascading panel rebuilds caused a WinUI layout hang. The Driver Settings section's final deferred grid-add callback had the same gap. Both now bail out immediately if the selected game has changed since the scan started.
+- Fixed the same freeze being triggerable by a background merge re-selecting the currently selected game. The panel rebuilder now skips a full rebuild when the selected card object hasn't changed since the last build.
+
 ## v2.8.5
 
 *Thanks to Lazorr for researching and contributing the fixes in this release.*
