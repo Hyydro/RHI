@@ -26,6 +26,10 @@ public sealed partial class MainWindow
                     var loading = ViewModel.IsLoading;
                     // After initial boot, keep the game view visible during refreshes
                     bool silent = ViewModel.HasInitialized;
+                    // A refresh replaces all card objects. Clear _lastBuiltCard so the
+                    // post-refresh debounce always triggers a fresh panel build regardless
+                    // of which game was selected before the refresh started.
+                    if (loading) _lastBuiltCard = null;
                     if (!loading && !silent && ViewModel.CurrentPage == AppPage.GameView)
                     {
                         RemoveSkeletons();
