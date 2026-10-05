@@ -553,8 +553,10 @@ public sealed partial class MainWindow
         GlobalReBarSizeCombo.Opacity = reBarOn ? 1.0 : 0.4;
         if (!reBarOn)
             GlobalReBarSizeCombo.SelectedIndex = 1; // Reset to 1GB (Default)
-        // Force detail panel rebuild if a game is selected
-        if (ViewModel.SelectedGame != null)
+        // Force detail panel rebuild if a game is selected and the detail panel is visible.
+        // Skip while Settings is open — triggering a rebuild here cancels in-flight NVAPI scans
+        // and starts new ones that compete on _sessionLock with the settings-page NVAPI reads.
+        if (ViewModel.SelectedGame != null && SettingsPanel.Visibility != Microsoft.UI.Xaml.Visibility.Visible)
             DispatcherQueue?.TryEnqueue(() => _detailPanelBuilder?.BuildOverridesPanel(ViewModel.SelectedGame));
     }
 
@@ -569,8 +571,10 @@ public sealed partial class MainWindow
             var presetService = App.Services.GetRequiredService<DlssPresetService>();
             _ = Task.Run(() => presetService.SetGlobalReBarSizeLimit(value));
         }
-        // Force detail panel rebuild if a game is selected
-        if (ViewModel.SelectedGame != null)
+        // Force detail panel rebuild if a game is selected and the detail panel is visible.
+        // Skip while Settings is open — triggering a rebuild here cancels in-flight NVAPI scans
+        // and starts new ones that compete on _sessionLock with the settings-page NVAPI reads.
+        if (ViewModel.SelectedGame != null && SettingsPanel.Visibility != Microsoft.UI.Xaml.Visibility.Visible)
             DispatcherQueue?.TryEnqueue(() => _detailPanelBuilder?.BuildOverridesPanel(ViewModel.SelectedGame));
     }
 
@@ -585,8 +589,10 @@ public sealed partial class MainWindow
             var presetService = App.Services.GetRequiredService<DlssPresetService>();
             _ = Task.Run(() => presetService.SetGlobalVSyncMode(value));
         }
-        // Force detail panel rebuild if a game is selected
-        if (ViewModel.SelectedGame != null)
+        // Force detail panel rebuild if a game is selected and the detail panel is visible.
+        // Skip while Settings is open — triggering a rebuild here cancels in-flight NVAPI scans
+        // and starts new ones that compete on _sessionLock with the settings-page NVAPI reads.
+        if (ViewModel.SelectedGame != null && SettingsPanel.Visibility != Microsoft.UI.Xaml.Visibility.Visible)
             DispatcherQueue?.TryEnqueue(() => _detailPanelBuilder?.BuildOverridesPanel(ViewModel.SelectedGame));
     }
 

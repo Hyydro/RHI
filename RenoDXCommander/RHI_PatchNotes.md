@@ -9,6 +9,7 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 **UI Freeze**
 - Fixed a recurring UI freeze that occurred after navigating between games with DLSS and Neural Rendering installed. The Neural Rendering section was missing a stale-selection guard on its deferred UI callback — when the user navigated away and back to the same game, two callbacks accumulated in the queue, both fired, and their cascading panel rebuilds caused a WinUI layout hang. The Driver Settings section's final deferred grid-add callback had the same gap. Both now bail out immediately if the selected game has changed since the scan started.
 - Fixed the same freeze being triggerable by a background merge re-selecting the currently selected game. The panel rebuilder now skips a full rebuild when the selected card object hasn't changed since the last build.
+- Fixed a UI freeze triggered by opening the Settings panel. The Global VSync, ReBAR Enable, and ReBAR Size combos were queuing a detail panel rebuild via `TryEnqueue` during Settings initialization. That rebuild cancelled in-flight NVAPI scans and kicked off new ones that competed on `_sessionLock` with the settings-page NVAPI reads, causing a deadlock. All three handlers now skip the rebuild when the Settings panel is open.
 
 ## v2.8.5
 
