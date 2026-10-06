@@ -12,9 +12,15 @@ timeout /t 2 /nobreak >nul
 :: Without this, WinAppSDK 1.6 publish fails: pass2 runs before CoreCompile.
 dotnet build %SRC%\RenoDXCommander.csproj -c Release -p:Platform=x64 -v quiet
 
-:: Clear stale incremental build cache — prevents XamlCompiler from getting a doubled
-:: backslash path (win-x64\\input.json) that causes "filename syntax incorrect" on pass1.
-if exist "%SRC%\obj\x64\Release" rmdir /s /q "%SRC%\obj\x64\Release"
+:: Clear the build's generated XAML codegen files before publish.
+:: The build produces MainWindow.g.i.cs in net8.0-windows10.0.19041.0\
+:: and publish produces another copy in net8.0-windows10.0.19041.0\win-x64\
+:: Both get compiled together and clash with CS0102 duplicate definitions.
+:: Clearing the non-publish output forces publish to regenerate cleanly.
+if exist "%SRC%\obj\x64\Release\net8.0-windows10.0.19041.0" (
+    del /q /f "%SRC%\obj\x64\Release\net8.0-windows10.0.19041.0\*.g.i.cs" 2>nul
+    del /q /f "%SRC%\obj\x64\Release\net8.0-windows10.0.19041.0\*.g.cs" 2>nul
+)
 
 dotnet publish %SRC%\RenoDXCommander.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:Platform=x64 --self-contained false -o "%OUT%"
 
