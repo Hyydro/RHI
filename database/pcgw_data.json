@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "game_count": 55404,
-  "generated": "2026-10-05T20:54:44Z",
+  "game_count": 55405,
+  "generated": "2026-10-06T08:25:35Z",
   "name_overrides": {
     "ACE COMBAT 8: WINGS OF THEVE": "Ace Combat 8: Wings of Theve",
     "AFOP": "Avatar: Frontiers of Pandora",
@@ -5638,6 +5638,8 @@
     },
     "Aion 2": {
       "steam_appid": 3393110,
+      "dx12": true,
+      "config_path": "%localappdata%\\AION2\\Saved_Steam\\Config\\Windows",
       "engine": "Unreal Engine 5"
     },
     "AIPD - Artificial Intelligence Police Department": {
@@ -68780,7 +68782,7 @@
       "steam_appid": 850190,
       "dx11": true,
       "config_path": "%LOCALAPPDATA%\\Goat2\\Saved\\Config\\WindowsNoEditor\\",
-      "config_path_xbox": "%LOCALAPPDATA%\\Goat2\\Saved\\Config\\WinGDK\\",
+      "config_path_xbox": "%LOCALAPPDATA%\\Goat2\\Saved\\Config\\WinGDK",
       "engine": "Unreal Engine 4"
     },
     "Goat Simulator: Remastered": {
@@ -71493,6 +71495,8 @@
     },
     "Growing My Manhole": {
       "steam_appid": 4415120,
+      "opengl": true,
+      "config_path": "%APPDATA%\\Godot\\app_userdata\\Growing My Manhole\\settings.cfg",
       "engine": "Godot"
     },
     "Growing Pains": {
@@ -113014,6 +113018,10 @@
     "NitroRage": {
       "steam_appid": 649870
     },
+    "Nivalis Nights": {
+      "steam_appid": 1488490,
+      "engine": "Unity"
+    },
     "No Body Home": {
       "steam_appid": 794420
     },
@@ -133477,6 +133485,7 @@
     },
     "RetroSpace": {
       "steam_appid": 2067820,
+      "config_path": "%USERPROFILE%\\LocalLow\\The Wild Gentlemen\\Retrospace",
       "engine": "Unity"
     },
     "RetroVamp": {
@@ -173577,7 +173586,6 @@
     },
     "The Witcher 3: Wild Hunt": {
       "steam_appid": 292030,
-      "dx11": true,
       "dx12": true,
       "config_path": "%USERPROFILE%\\Documents\\The Witcher 3\\*.settings",
       "engine": "REDengine"
@@ -178782,7 +178790,9 @@
       "config_path": "%APPDATA%\\Transport Fever 2\\settings.lua"
     },
     "Transport Fever 3": {
-      "steam_appid": 3493540
+      "steam_appid": 3493540,
+      "vulkan": true,
+      "config_path": "%APPDATA%\\Transport Fever 3\\settings.lua"
     },
     "Transport Giant": {
       "steam_appid": 271370
