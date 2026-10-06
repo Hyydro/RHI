@@ -19,6 +19,10 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 **Engine.ini**
 - Fixed Engine.ini not being written on install for games that have never been launched, when the config path comes from the PCGW database. RHI now creates the full folder chain if it doesn't exist yet.
 
+### Maintenance
+- Changing Smooth Motion or ReBAR Enable in the Driver Settings section now rebuilds only that section instead of the entire game overrides panel.
+- `DeployAllShaders` now takes a snapshot of the game list before starting background work, avoiding a potential race with a concurrent Refresh.
+
 ## v2.8.5
 
 *Thanks to Lazorr for researching and contributing the fixes in this release.*
