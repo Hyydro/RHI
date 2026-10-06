@@ -124,28 +124,73 @@ public partial class MainViewModel
                     // ── 4. ClrMD stack capture — once per stall ─────────────────────────
                     // Point 4: DataTarget is disposed via using — no process clone leak.
                     // Point 5: native frames resolve partially; managed caller above them is enough.
+                    // ClrMD is loaded dynamically (not a static package reference) to avoid
+                    // crashing the WinUI XAML compiler's type resolution during publish.
                     if (System.Threading.Interlocked.CompareExchange(ref _freezeStackCaptured, 1, 0) == 0)
                     {
                         _ = Task.Run(() =>
                         {
                             try
                             {
-                                using var target = Microsoft.Diagnostics.Runtime.DataTarget
-                                    .CreateSnapshotAndAttach(Environment.ProcessId);
-                                var runtime = target.ClrVersions.FirstOrDefault()?.CreateRuntime();
-                                if (runtime == null) { CrashReporter.LogSync("[Heartbeat.Stack] ClrMD: no runtime found"); return; }
+                                // Resolve the ClrMD assembly from the app's base directory
+                                var clrMdPath = System.IO.Path.Combine(
+                                    System.IO.Path.GetDirectoryName(Environment.ProcessPath) ?? AppContext.BaseDirectory,
+                                    "Microsoft.Diagnostics.Runtime.dll");
+                                if (!System.IO.File.Exists(clrMdPath))
+                                {
+                                    CrashReporter.LogSync($"[Heartbeat.Stack] ClrMD not found at '{clrMdPath}' — stack capture unavailable");
+                                    return;
+                                }
+                                var clrMdAsm = System.Reflection.Assembly.LoadFrom(clrMdPath);
+                                var dataTargetType = clrMdAsm.GetType("Microsoft.Diagnostics.Runtime.DataTarget");
+                                if (dataTargetType == null) { CrashReporter.LogSync("[Heartbeat.Stack] ClrMD: DataTarget type not found"); return; }
+
+                                // DataTarget.CreateSnapshotAndAttach(pid)
+                                var createSnapshot = dataTargetType.GetMethod("CreateSnapshotAndAttach",
+                                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static,
+                                    null, new[] { typeof(int) }, null);
+                                if (createSnapshot == null) { CrashReporter.LogSync("[Heartbeat.Stack] ClrMD: CreateSnapshotAndAttach not found"); return; }
+
+                                using var target = (IDisposable)createSnapshot.Invoke(null, new object[] { Environment.ProcessId })!;
+                                var targetObj = target;
+
+                                // target.ClrVersions[0].CreateRuntime()
+                                var clrVersionsProp = targetObj.GetType().GetProperty("ClrVersions");
+                                var clrVersions = clrVersionsProp?.GetValue(targetObj) as System.Collections.IEnumerable;
+                                object? firstVersion = null;
+                                if (clrVersions != null)
+                                    foreach (var v in clrVersions) { firstVersion = v; break; }
+                                if (firstVersion == null) { CrashReporter.LogSync("[Heartbeat.Stack] ClrMD: no runtime found"); return; }
+
+                                var createRuntime = firstVersion.GetType().GetMethod("CreateRuntime", Type.EmptyTypes);
+                                var runtime = createRuntime?.Invoke(firstVersion, null);
+                                if (runtime == null) { CrashReporter.LogSync("[Heartbeat.Stack] ClrMD: CreateRuntime returned null"); return; }
+
+                                var threadsProp = runtime.GetType().GetProperty("Threads");
+                                var threads = threadsProp?.GetValue(runtime) as System.Collections.IEnumerable;
 
                                 var sb = new System.Text.StringBuilder();
                                 sb.AppendLine("[Heartbeat.Stack] Managed thread stacks at time of freeze:");
-                                foreach (var thread in runtime.Threads)
+                                if (threads != null)
                                 {
-                                    bool isUiThread = UiThreadNativeId > 0 && thread.OSThreadId == UiThreadNativeId;
-                                    sb.AppendLine($"  Thread OSId={thread.OSThreadId}{(isUiThread ? " <-- UI THREAD" : "")} ManagedId={thread.ManagedThreadId}");
-                                    int frameCount = 0;
-                                    foreach (var frame in thread.EnumerateStackTrace())
+                                    foreach (var thread in threads)
                                     {
-                                        sb.AppendLine($"    {frame}");
-                                        if (++frameCount >= 40) { sb.AppendLine("    ... (truncated)"); break; }
+                                        var osId = (uint)(thread.GetType().GetProperty("OSThreadId")?.GetValue(thread) ?? 0u);
+                                        var managedId = (int)(thread.GetType().GetProperty("ManagedThreadId")?.GetValue(thread) ?? 0);
+                                        bool isUiThread = UiThreadNativeId > 0 && osId == UiThreadNativeId;
+                                        sb.AppendLine($"  Thread OSId={osId}{(isUiThread ? " <-- UI THREAD" : "")} ManagedId={managedId}");
+
+                                        var enumStackTrace = thread.GetType().GetMethod("EnumerateStackTrace", Type.EmptyTypes);
+                                        var frames = enumStackTrace?.Invoke(thread, null) as System.Collections.IEnumerable;
+                                        int frameCount = 0;
+                                        if (frames != null)
+                                        {
+                                            foreach (var frame in frames)
+                                            {
+                                                sb.AppendLine($"    {frame}");
+                                                if (++frameCount >= 40) { sb.AppendLine("    ... (truncated)"); break; }
+                                            }
+                                        }
                                     }
                                 }
                                 CrashReporter.LogSync(sb.ToString());
