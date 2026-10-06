@@ -821,6 +821,9 @@
     "REANIMAL": {
       "renodx": "REANIMAL has native HDR that is literally \u0022HDR Den made\u0022.\rThere is no need to add RenoDX to this game."
     },
+    "Gears of War: E-Day": {
+      "renodx": "\u26A0 ReShade with addon support requires Easy Anti-Cheat to be disabled.\n\nYou must launch the game with EAC disabled for RenoDX to work."
+    },
     "Batman\u2122: Arkham Knight": { "luma": "\u26A0 This is an unreleased / work-in-progress Luma mod.\n\nProceed at your own risk. Please do not report issues to HDR Den or RHI unless you have been specifically asked to test this mod." },
     "Beyond Two Souls": { "luma": "\u26A0 This is an unreleased / work-in-progress Luma mod.\n\nProceed at your own risk. Please do not report issues to HDR Den or RHI unless you have been specifically asked to test this mod." },
     "Blue Reflection: Second Light": { "luma": "\u26A0 This is an unreleased / work-in-progress Luma mod.\n\nProceed at your own risk. Please do not report issues to HDR Den or RHI unless you have been specifically asked to test this mod." },

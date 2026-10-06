@@ -6,6 +6,10 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 
 ### Bug Fixes
 
+**RenoDX**
+- Fixed the installed mod version not appearing after a fresh install until you navigate away and back to the game. The detail panel now updates immediately.
+- Fixed game-specific notes from the RHI database not appearing in the RenoDX info dialog for UE-Extended games. Previously these notes were only injected for NativeHDR games — they now also appear for any game with a DB comment regardless of tier.
+
 **UI Freeze**
 - Fixed a recurring freeze that could happen after switching between games with DLSS and Neural Rendering installed. Navigating away and back to the same game quickly could queue two back-to-back panel rebuilds, causing the UI thread to hang.
 - Fixed a freeze that could occur when opening the Settings panel while a game was selected. Changing certain global driver settings (VSync, ReBAR) was triggering a detail panel rebuild in the background, which conflicted with the NVAPI reads that Settings needs to open.
