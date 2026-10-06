@@ -12,6 +12,8 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 **UI Freeze**
 - Fixed a recurring freeze that could happen after switching between games with DLSS and Neural Rendering installed. Navigating away and back to the same game quickly could queue two back-to-back panel rebuilds, causing the UI thread to hang.
 - Fixed a freeze that could occur when opening the Settings panel while a game was selected. Changing certain global driver settings (VSync, ReBAR) was triggering a detail panel rebuild in the background, which conflicted with the NVAPI reads that Settings needs to open. All three now correctly skip the rebuild when Settings is open.
+- Fixed several places where RHI was reading NVIDIA driver settings on the UI thread before opening a dialog. Opening Configure RTX HDR, Multi Frame Gen settings, or DXVK settings could block the UI for up to 25 seconds if NVAPI was slow or unresponsive (most common after waking from GPU sleep). Values are now fetched on a background thread before the dialog is built.
+- Fixed DLSS version information being refreshed on the UI thread after swapping a DLSS DLL. The version read involves synchronous disk I/O across several DLL paths, which could stall the UI on a slow disk or with antivirus active.
 
 **Refresh**
 - Fixed the game detail panel going blank after pressing Refresh. The card was being rebuilt correctly, but the panels weren't being made visible again.
