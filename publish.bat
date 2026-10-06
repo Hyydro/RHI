@@ -8,6 +8,10 @@ taskkill /F /IM RHI-Stats.exe >nul 2>nul
 taskkill /F /IM RHI.DropHelper.exe >nul 2>nul
 timeout /t 2 /nobreak >nul
 
+:: Build first so XamlCompiler pass2 has the compiled DLL available.
+:: Without this, WinAppSDK 1.6 publish fails: pass2 runs before CoreCompile.
+dotnet build %SRC%\RenoDXCommander.csproj -c Release -p:Platform=x64 -v quiet
+
 :: Clear stale incremental build cache — prevents XamlCompiler from getting a doubled
 :: backslash path (win-x64\\input.json) that causes "filename syntax incorrect" on pass1.
 if exist "%SRC%\obj\x64\Release" rmdir /s /q "%SRC%\obj\x64\Release"

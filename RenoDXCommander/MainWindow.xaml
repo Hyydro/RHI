@@ -2739,23 +2739,6 @@
                         </StackPanel>
 
                     </StackPanel>
-
-                    <!-- CARD 6: FREEZE DIAGNOSTICS (dev-only - hidden by default) -->
-                    <Border x:Name="FreezeDiagnosticsCard" x:FieldModifier="internal"
-                            Visibility="Collapsed"
-                            Background="{StaticResource SurfaceRaisedBrush}" CornerRadius="10" Padding="20,16"
-                            BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1">
-                        <StackPanel Spacing="12">
-                            <TextBlock Text="Freeze Diagnostics" FontSize="14" FontWeight="SemiBold"
-                                       Foreground="{StaticResource TextPrimaryBrush}"/>
-                            <TextBlock TextWrapping="Wrap" FontSize="11"
-                                       Foreground="{StaticResource InlineDescriptionBrush}" LineHeight="18"
-                                       Text="Test freeze detection before relying on it for a real freeze. Each button blocks the UI thread in a different way. Check the session log after - IDLE means waiting on a lock or native call, PEGGED means a layout or compute loop."/>
-                            <StackPanel x:Name="FreezeDiagnosticsButtons" x:FieldModifier="internal"
-                                        Orientation="Horizontal" Spacing="8"/>
-                        </StackPanel>
-                    </Border>
-
                 </ScrollViewer>
             </Grid>
 

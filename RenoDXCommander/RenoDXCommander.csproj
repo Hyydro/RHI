@@ -171,16 +171,6 @@
   </ItemGroup>
 
 
-  <!-- ClrMD for freeze diagnostics — loaded dynamically at runtime, not a compile-time reference.
-       Using a static PackageReference crashes the WinUI XAML compiler during single-file publish. -->
-  <ItemGroup>
-    <None Include="$(UserProfile)\.nuget\packages\microsoft.diagnostics.runtime\4.1.745802\lib\netstandard2.0\Microsoft.Diagnostics.Runtime.dll"
-          CopyToOutputDirectory="PreserveNewest"
-          ExcludeFromSingleFile="true"
-          Link="Microsoft.Diagnostics.Runtime.dll" />
-  </ItemGroup>
-
-
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
