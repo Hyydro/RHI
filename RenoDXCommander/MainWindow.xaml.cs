@@ -424,7 +424,11 @@ public sealed partial class MainWindow : Window
             RunShutdownStep("library", ViewModel.SaveLibraryPublic);
         RunShutdownStep("window bounds", _windowStateManager.SaveWindowBounds);
         RunShutdownStep("single instance", SingleInstanceService.Stop);
+        CrashReporter.Shutdown(); // flush async log channel before process exits
         Application.Current.Exit();
+        // Hard fallback: if WinUI message loop doesn't terminate (e.g. fire-and-forget tasks
+        // keeping thread pool alive), force process exit after a short grace period.
+        _ = Task.Delay(3000).ContinueWith(_ => Environment.Exit(0));
     }
 
     internal void RequestExit()

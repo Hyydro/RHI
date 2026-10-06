@@ -6,7 +6,9 @@ To connect: open **Settings → GitHub API** and click **Sign in with GitHub**. 
 
 ### Bug Fixes
 
-**UI Freeze**
+**Process stays alive after closing**
+- Fixed RHI process remaining alive and consuming CPU after closing the window. Two root causes: (1) Three fire-and-forget background tasks (update checks, deferred shader/addon sync, ReShade/OptiScaler staging) had no cancellation checks — if the window closed while these were running, they ran to completion. Added `_backgroundStopped` guards at the start of each block and at the key `await` points in the deferred sync block. (2) `CrashReporter.Shutdown()` was never called, leaving the async log-drain thread alive indefinitely. Added the call to the shutdown sequence. Added a 3-second hard `Environment.Exit(0)` fallback after `Application.Current.Exit()` to guarantee process termination even if any fire-and-forget work outlasts the grace period.
+
 - Fixed a recurring UI freeze that occurred after navigating between games with DLSS and Neural Rendering installed. The Neural Rendering section was missing a stale-selection guard on its deferred UI callback — when the user navigated away and back to the same game, two callbacks accumulated in the queue, both fired, and their cascading panel rebuilds caused a WinUI layout hang. The Driver Settings section's final deferred grid-add callback had the same gap. Both now bail out immediately if the selected game has changed since the scan started.
 - Fixed the same freeze being triggerable by a background merge re-selecting the currently selected game. The panel rebuilder now skips a full rebuild when the selected card object hasn't changed since the last build.
 - Fixed a UI freeze triggered by opening the Settings panel. The Global VSync, ReBAR Enable, and ReBAR Size combos were queuing a detail panel rebuild via `TryEnqueue` during Settings initialization. That rebuild cancelled in-flight NVAPI scans and kicked off new ones that competed on `_sessionLock` with the settings-page NVAPI reads, causing a deadlock. All three handlers now skip the rebuild when the Settings panel is open.
