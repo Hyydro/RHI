@@ -168,6 +168,27 @@ public static class CrashReporter
     }
 
     /// <summary>
+    /// Writes a log entry synchronously, bypassing the async channel and flushing directly
+    /// to disk. Use for freeze diagnostics only — the process may be killed immediately after
+    /// and the async drain may not complete in time to flush queued entries.
+    /// </summary>
+    public static void LogSync(string message)
+    {
+        var entry = $"[{DateTime.Now:HH:mm:ss.fff}] {SanitisePath(message)}";
+        _breadcrumbs.Enqueue(entry);
+        while (_breadcrumbs.Count > MaxBreadcrumbs)
+            _breadcrumbs.TryDequeue(out _);
+        try
+        {
+            lock (_verboseLogLock)
+            {
+                File.AppendAllText(SessionLogPath, entry + Environment.NewLine, Encoding.UTF8);
+            }
+        }
+        catch { /* Never let logging crash the app */ }
+    }
+
+    /// <summary>
     /// Removes personally identifiable information from log entries before writing to disk.
     /// Replaces Windows usernames, Steam user IDs, and Xbox AUMIDs with safe placeholders.
     /// </summary>
