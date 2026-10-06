@@ -129,6 +129,26 @@ public static class CrashReporter
     private static readonly ConcurrentQueue<string> _breadcrumbs = new();
 
     /// <summary>
+    /// Returns the last <paramref name="count"/> breadcrumb entries that contain "[UIAction]",
+    /// as short action-name strings (timestamp and prefix stripped). Used by the heartbeat
+    /// freeze handler to include a recent-actions timeline in the freeze log entry.
+    /// </summary>
+    public static List<string> GetRecentUiActions(int count)
+    {
+        var all = _breadcrumbs.ToArray();
+        var result = new List<string>(count);
+        for (int i = all.Length - 1; i >= 0 && result.Count < count; i--)
+        {
+            var entry = all[i];
+            var idx = entry.IndexOf("[UIAction] ", StringComparison.Ordinal);
+            if (idx >= 0)
+                result.Add(entry.Substring(idx + "[UIAction] ".Length));
+        }
+        result.Reverse();
+        return result;
+    }
+
+    /// <summary>
     /// Log a short message describing what the app is currently doing.
     /// These entries are included in crash reports to show the sequence of events
     /// leading up to the crash. When verbose logging is enabled, the entry is also

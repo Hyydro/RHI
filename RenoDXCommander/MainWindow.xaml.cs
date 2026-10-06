@@ -188,6 +188,7 @@ public sealed partial class MainWindow : Window
         // Restore window size & position after activation (ensure HWND is ready)
         this.Activated += MainWindow_Activated;
         ViewModel.SetDispatcher(DispatcherQueue);
+        ViewModel.UiThreadNativeId = NativeInterop.GetCurrentThreadId(); // capture UI thread ID for freeze diagnostics
         ViewModel.ConfirmForeignDxgiOverwrite = _dialogService.ShowForeignDxgiConfirmDialogAsync;
         ViewModel.ShowVulkanAdminRequiredDialog = _dialogService.ShowVulkanAdminRequiredDialogAsync;
         ViewModel.RequestOverridesPanelRebuild = card =>

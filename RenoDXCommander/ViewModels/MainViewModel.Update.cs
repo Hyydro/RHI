@@ -15,6 +15,12 @@ public partial class MainViewModel
     private volatile bool _backgroundStopped;
     private readonly CancellationTokenSource _backgroundLifetime = new();
 
+    /// <summary>Native thread ID of the UI thread — captured once at startup for CPU sampling.</summary>
+    internal uint UiThreadNativeId { get; set; }
+
+    /// <summary>Prevents more than one stack capture per freeze event.</summary>
+    private int _freezeStackCaptured; // 0 = not captured, 1 = captured; Interlocked
+
     internal void StopBackgroundWork()
     {
         lock (_backgroundTimerLock)
@@ -56,12 +62,87 @@ public partial class MainViewModel
                 {
                     await probe.Task.WaitAsync(TimeSpan.FromSeconds(3)).ConfigureAwait(false);
                     if (!_backgroundStopped)
+                    {
+                        System.Threading.Interlocked.Exchange(ref _freezeStackCaptured, 0); // reset for next freeze
                         _crashReporter.Log($"[Heartbeat] UI responsive — last action: {_lastUiAction}");
+                    }
                 }
                 catch (TimeoutException)
                 {
-                    if (!_backgroundStopped)
-                        _crashReporter.Log($"[Heartbeat] *** UI FROZEN *** last action before freeze: {_lastUiAction}");
+                    if (_backgroundStopped) return;
+
+                    // ── 1. Last N UI actions from breadcrumb ring buffer ────────────────
+                    var recentActions = CrashReporter.GetRecentUiActions(20);
+
+                    // ── 2. UI thread CPU delta (1-second sample) ────────────────────────
+                    string cpuInfo = "unknown";
+                    try
+                    {
+                        var proc = System.Diagnostics.Process.GetCurrentProcess();
+                        var uiNativeId = UiThreadNativeId;
+                        var uiThread = uiNativeId > 0
+                            ? proc.Threads.Cast<System.Diagnostics.ProcessThread>()
+                                  .FirstOrDefault(t => t.Id == (int)uiNativeId)
+                            : null;
+                        if (uiThread != null)
+                        {
+                            var t0 = uiThread.TotalProcessorTime;
+                            await Task.Delay(1000).ConfigureAwait(false);
+                            proc.Refresh();
+                            uiThread = proc.Threads.Cast<System.Diagnostics.ProcessThread>()
+                                           .FirstOrDefault(t => t.Id == (int)uiNativeId);
+                            if (uiThread != null)
+                            {
+                                var delta = uiThread.TotalProcessorTime - t0;
+                                cpuInfo = delta.TotalMilliseconds > 900
+                                    ? $"PEGGED ({delta.TotalMilliseconds:F0}ms/1s — layout or compute loop)"
+                                    : $"IDLE ({delta.TotalMilliseconds:F0}ms/1s — waiting on lock or native call)";
+                            }
+                        }
+                        else
+                        {
+                            cpuInfo = uiNativeId == 0 ? "UI thread ID not captured" : "UI thread not found in process";
+                        }
+                    }
+                    catch (Exception ex) { cpuInfo = $"CPU sample failed: {ex.Message}"; }
+
+                    _crashReporter.Log($"[Heartbeat] *** UI FROZEN *** last action: {_lastUiAction} | UI thread CPU: {cpuInfo}");
+                    if (recentActions.Count > 0)
+                        _crashReporter.Log($"[Heartbeat] Recent UI actions: {string.Join(" → ", recentActions)}");
+
+                    // ── 3. ClrMD stack capture — once per stall ─────────────────────────
+                    if (System.Threading.Interlocked.CompareExchange(ref _freezeStackCaptured, 1, 0) == 0)
+                    {
+                        _ = Task.Run(() =>
+                        {
+                            try
+                            {
+                                using var target = Microsoft.Diagnostics.Runtime.DataTarget
+                                    .CreateSnapshotAndAttach(Environment.ProcessId);
+                                var runtime = target.ClrVersions.FirstOrDefault()?.CreateRuntime();
+                                if (runtime == null) { _crashReporter.Log("[Heartbeat.Stack] ClrMD: no runtime found"); return; }
+
+                                var sb = new System.Text.StringBuilder();
+                                sb.AppendLine("[Heartbeat.Stack] Managed thread stacks at time of freeze:");
+                                foreach (var thread in runtime.Threads)
+                                {
+                                    bool isUiThread = UiThreadNativeId > 0 && thread.OSThreadId == UiThreadNativeId;
+                                    sb.AppendLine($"  Thread OSId={thread.OSThreadId}{(isUiThread ? " <-- UI THREAD" : "")} ManagedId={thread.ManagedThreadId}");
+                                    int frameCount = 0;
+                                    foreach (var frame in thread.EnumerateStackTrace())
+                                    {
+                                        sb.AppendLine($"    {frame.ToString()}");
+                                        if (++frameCount >= 40) { sb.AppendLine("    ... (truncated)"); break; }
+                                    }
+                                }
+                                _crashReporter.Log(sb.ToString());
+                            }
+                            catch (Exception ex)
+                            {
+                                _crashReporter.Log($"[Heartbeat.Stack] ClrMD capture failed: {ex.Message}");
+                            }
+                        });
+                    }
                 }
             }, null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
         }
