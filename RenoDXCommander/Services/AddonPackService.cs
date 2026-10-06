@@ -758,9 +758,9 @@ public class AddonPackService : IAddonPackService
                     var safeName = SanitizeFileName(entry.PackageName);
                     var staged64 = Path.Combine(StagingDir, safeName + ".addon64");
                     var staged32 = Path.Combine(StagingDir, safeName + ".addon32");
-                    var deployments = LoadDeployments();
+                    var deployments2 = LoadDeployments();
                     int redeployed = 0;
-                    foreach (var (gamePath, trackedFiles) in deployments)
+                    foreach (var (gamePath, trackedFiles) in deployments2)
                     {
                         foreach (var trackedFile in trackedFiles.ToList())
                         {
