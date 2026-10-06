@@ -405,6 +405,7 @@ public sealed partial class MainWindow : Window
         _shutdownSignalTimer?.Stop();
         _launchTimer?.Stop();
         _selectionDebounceTimer?.Stop();
+        _crashReporter.Log("[Shutdown] Sequence started");
         RunShutdownStep("dialogs", DialogService.Stop);
         RunShutdownStep("background timers", ViewModel.StopBackgroundWork);
         RunShutdownStep("panel scans", _detailPanelBuilder.StopBackgroundWork);
@@ -424,11 +425,13 @@ public sealed partial class MainWindow : Window
             RunShutdownStep("library", ViewModel.SaveLibraryPublic);
         RunShutdownStep("window bounds", _windowStateManager.SaveWindowBounds);
         RunShutdownStep("single instance", SingleInstanceService.Stop);
-        CrashReporter.Shutdown(); // flush async log channel before process exits
+        _crashReporter.Log("[Shutdown] All steps complete — exiting");
+        CrashReporter.Shutdown(); // flush async log channel (waits up to 2s for drain)
         Application.Current.Exit();
         // Hard fallback: if WinUI message loop doesn't terminate (e.g. fire-and-forget tasks
         // keeping thread pool alive), force process exit after a short grace period.
-        _ = Task.Delay(3000).ContinueWith(_ => Environment.Exit(0));
+        // 5s > CrashReporter.Shutdown's 2s drain wait, so the log is flushed before this fires.
+        _ = Task.Delay(5000).ContinueWith(_ => Environment.Exit(0));
     }
 
     internal void RequestExit()
