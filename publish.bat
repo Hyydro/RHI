@@ -8,7 +8,11 @@ taskkill /F /IM RHI-Stats.exe >nul 2>nul
 taskkill /F /IM RHI.DropHelper.exe >nul 2>nul
 timeout /t 2 /nobreak >nul
 
-dotnet publish %SRC%\RenoDXCommander.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:Platform=x64 --self-contained false --no-incremental -o "%OUT%"
+:: Clear stale incremental build cache — prevents XamlCompiler from getting a doubled
+:: backslash path (win-x64\\input.json) that causes "filename syntax incorrect" on pass1.
+if exist "%SRC%\obj\x64\Release" rmdir /s /q "%SRC%\obj\x64\Release"
+
+dotnet publish %SRC%\RenoDXCommander.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:Platform=x64 --self-contained false -o "%OUT%"
 
 :: Build and copy the drop helper (non-elevated overlay for admin mode drag-drop)
 dotnet build RHI.DropHelper\RHI.DropHelper.csproj -c Release -v quiet
