@@ -352,10 +352,9 @@ public partial class DragDropHandler
         // never trigger removal of renodx-*.addon64.
         string? existingAddon = null;
         // Only conflict-check and remove existing renodx-* addons when the dropped file is itself
-        // a renodx-* or luma-* addon (i.e. a direct replacement). Community addons with other
-        // naming conventions (e.g. tw3-darkernights-remastered) coexist alongside renodx mods.
-        bool incomingIsRenodx = addonFileName.StartsWith("renodx", StringComparison.OrdinalIgnoreCase)
-                             || addonFileName.StartsWith("luma-", StringComparison.OrdinalIgnoreCase);
+        // a renodx-* addon (i.e. a direct replacement). Community addons with other naming
+        // conventions (e.g. tw3-darkernights-remastered) coexist alongside renodx mods.
+        bool incomingIsRenodx = addonFileName.StartsWith("renodx", StringComparison.OrdinalIgnoreCase);
         if (incomingIsRenodx)
         try
         {
