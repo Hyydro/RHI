@@ -1175,11 +1175,18 @@ public sealed partial class MainWindow
         rtxHdrCombo.Items.Add("On");
 
         var gameNameService = App.Services.GetRequiredService<IGameNameService>();
-        // Read live driver state — reflects changes made outside RHI (e.g. NVIDIA App, driver update)
+        // Read live driver state off the UI thread — GetRtxHdrEnable calls _sessionLock.Wait(5000)
         var dlssPresetServiceCog = App.Services.GetRequiredService<DlssPresetService>();
-        bool isRtxHdrEnabled = dlssPresetServiceCog.IsSupported && !string.IsNullOrEmpty(card.InstallPath)
-            ? (dlssPresetServiceCog.GetRtxHdrEnable(card.GameName, card.InstallPath) == 0x01)
-            : gameNameService.RtxHdrGames.Contains(card.GameName);
+        bool isRtxHdrEnabled;
+        if (dlssPresetServiceCog.IsSupported && !string.IsNullOrEmpty(card.InstallPath))
+        {
+            var capturedName = card.GameName; var capturedPath = card.InstallPath;
+            isRtxHdrEnabled = await Task.Run(() => dlssPresetServiceCog.GetRtxHdrEnable(capturedName, capturedPath) == 0x01);
+        }
+        else
+        {
+            isRtxHdrEnabled = gameNameService.RtxHdrGames.Contains(card.GameName);
+        }
         // Sync persisted state to match driver
         if (isRtxHdrEnabled) gameNameService.RtxHdrGames.Add(card.GameName);
         else gameNameService.RtxHdrGames.Remove(card.GameName);
